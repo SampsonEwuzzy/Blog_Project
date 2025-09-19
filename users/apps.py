@@ -13,7 +13,9 @@ def create_superuser(sender, **kwargs):
 
         if not User.objects.filter(username=username).exists():
             User.objects.create_superuser(username=username, email=email, password=password)
-            print("✅ Superuser created!")
+            print(f"✅ Superuser '{username}' created!")
+        else:
+            print(f"ℹ️ Superuser '{username}' already exists. Skipping creation.")
 
 
 class UsersConfig(AppConfig):
