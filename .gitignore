@@ -1,0 +1,65 @@
+# ==================================
+# Python / Django
+# ==================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# SQLite (local dev only)
+*.sqlite3
+db.sqlite3
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+
+# Environment & secrets
+*.env
+.env.*
+!.env.example   # keep a sample env if you want
+
+# Django specific
+/media/
+staticfiles/
+static/
+
+# Migrations (optional – keep if you want to version-control them)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# ==================================
+# PostgreSQL
+# ==================================
+*.sql
+*.dump
+*.backup
+
+# ==================================
+# Logs
+# ==================================
+*.log
+*.out
+*.err
+
+# ==================================
+# Editors & OS
+# ==================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ==================================
+# Render / Deployment
+# ==================================
+# Don’t commit compiled or build artifacts
+*.pot
+*.mo
+*.pyc
+__pycache__/
+
+# If using collectstatic locally
+/static_cdn/
