@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     "users.apps.UsersConfig",
-    'blog',
     'cloudinary',
     'cloudinary_storage',
     'django.contrib.admin',
