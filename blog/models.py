@@ -1,5 +1,4 @@
 from django.db import models
-from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
@@ -27,18 +26,16 @@ class Post(models.Model):
         ('published', 'Published'),
     )
 
-    
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     excerpt = models.TextField(blank=True, null=True)
-    content = RichTextField()
-    cover_image = CloudinaryField("image", blank=True, null=True)  # cloudinary upload
+    content = models.TextField()  # Changed from RichTextField() to models.TextField()
+    cover_image = CloudinaryField("image", blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name="posts")
-
 
     class Meta:
         ordering = ["-created_at"]
@@ -68,9 +65,7 @@ class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('post', 'user') # Ensures a user can only like a post once
+        unique_together = ('post', 'user')
 
     def __str__(self):
         return f"{self.user} likes {self.post}"
-
-

@@ -21,9 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('wuzzi-admin-2025/', admin.site.urls),
-    path('ckeditor/', include('ckeditor_uploader.urls')), # This line needs the `include` import
-    path('', include('blog.urls')),
     path('users/', include('users.urls')),
+    path('tinymce/', include('tinymce.urls')),
+    path('', include('blog.urls')),
 ]
 
 if settings.DEBUG:

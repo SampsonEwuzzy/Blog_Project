@@ -1,12 +1,12 @@
 # blog/forms.py
 from django import forms
 from .models import Post, Category, Comment
-from ckeditor.widgets import CKEditorWidget
+from tinymce.widgets import TinyMCE
 from django.forms import ClearableFileInput
 
 class PostForm(forms.ModelForm):
-    # This is handled separately as it's a rich text field
-    content = forms.CharField(widget=CKEditorWidget())
+    # This widget will render a TinyMCE editor for the content field
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
 
     class Meta:
         model = Post

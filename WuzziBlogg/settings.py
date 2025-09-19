@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'wuzziblogg.onrender.com']
 
 INSTALLED_APPS = [
     # ... other apps
-    'ckeditor',
+    'tinymce',
     'blog.apps.BlogConfig',
     'crispy_forms',
     'crispy_bootstrap5',
@@ -48,26 +48,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
-            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink', 'Image'],
-            ['Undo', 'Redo'],
-            ['Format', 'Font', 'FontSize'],
-            ['TextColor', 'BGColor'],
-            ['Smiley', 'SpecialChar'],
-            ['Source']
-        ],
-        'height': 300,
-        'width': '100%',
-        'extraPlugins': 'codesnippet',
-    }
-}
 
+TINYMCE_DEFAULT_CONFIG = {
+    "height": "400px",
+    "width": "100%",
+    "menubar": False,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,code,"
+    "help,wordcount,spellchecker",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | help",
+}
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
@@ -77,9 +70,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CLOUDINARY_URL = config("CLOUDINARY_URL")
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
-# Cloudinary CKEditor Settings
-CKEDITOR_UPLOAD_BACKEND = "cloudinary_storage.storage.MediaCloudinaryStorage"
-CKEDITOR_UPLOAD_PATH = 'uploads/ckeditor/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
