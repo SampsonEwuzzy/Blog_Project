@@ -2,7 +2,7 @@ services:
   - type: web
     name: wuzziblog
     env: python
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python -c \"from django.contrib.auth.models import User; if not User.objects.filter(username='admin').exists(): User.objects.create_superuser('admin', 'admin@example.com', 'your_secure_password')\""
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python -c \"from django.contrib.auth.models import User; if not User.objects.filter(username='admin').exists(): User.objects.create_superuser('admin', 'admin@example.com', 'qwertyuiop2025')\""
     startCommand: "gunicorn WuzziBlogg.wsgi:application"
     envVars:
       - key: SECRET_KEY
