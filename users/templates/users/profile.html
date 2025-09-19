@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h2>Welcome to your profile, {{ user.username }}!</h2>
+                <hr>
+                <p>This is your personal dashboard.</p>
+                <a href="{% url 'post-create' %}" class="btn btn-primary mt-3">Create New Post</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

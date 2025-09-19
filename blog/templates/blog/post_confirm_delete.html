@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-danger text-white">
+                        <h1 class="card-title h3 mb-0">Delete Post</h1>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Are you sure you want to delete the post titled **"{{ post.title }}"**?</p>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                <a href="{% url 'post-detail' post.slug %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

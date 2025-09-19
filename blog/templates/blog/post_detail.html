@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h1 class="mb-3">{{ post.title }}</h1>
+                <p class="text-muted">
+                    By {{ post.author }} on {{ post.created_at|date:"F j, Y" }}
+                    {% if post.category %}
+                        | In category: <a href="{% url 'posts-by-category' post.category.slug %}" class="text-decoration-none">{{ post.category.name }}</a>
+                    {% endif %}
+                </p>
+
+                {% if post.cover_image %}
+                    <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="img-fluid mb-4 rounded">
+                {% endif %}
+
+                <div class="lead">
+                    {{ post.content|linebreaks }}
+                </div>
+                <hr class="my-4">
+
+                <div class="share-buttons my-4">
+                    <h5 class="d-inline-block me-3">Share this post:</h5>
+                    <a href="https://twitter.com/intent/tweet?text={{ post.title }}&url={{ request.build_absolute_uri }}" 
+                       target="_blank" class="btn btn-info text-white me-2">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                       target="_blank" class="btn btn-primary me-2">
+                        <i class="fab fa-facebook"></i> Facebook
+                    </a>
+                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title }}" 
+                       target="_blank" class="btn btn-secondary">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+                <hr class="my-4">
+
+                <div class="d-flex align-items-center mb-4">
+                    <form action="{% url 'like-post' post.slug %}" method="post" class="me-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">
+                            {% if is_liked %}
+                                Unlike
+                            {% else %}
+                                Like
+                            {% endif %}
+                        </button>
+                    </form>
+                    <span class="text-muted">{{ total_likes }} Likes</span>
+                </div>
+                
+                {% if post.author == user %}
+                    <a href="{% url 'post-update' post.slug %}" class="btn btn-warning">Edit Post</a>
+                    <a href="{% url 'post-delete' post.slug %}" class="btn btn-danger">Delete Post</a>
+                    <hr class="my-4">
+                {% endif %}
+                
+                <a href="{% url 'post-list' %}" class="btn btn-secondary">← Back to all posts</a>
+
+                <hr class="my-4">
+                
+                <h3>Comments ({{ comments.count }})</h3>
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <p class="card-text">{{ comment.content }}</p>
+                                <small class="text-muted">By {{ comment.author }} on {{ comment.created_at|date:"F j, Y" }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endif %}
+                
+                <hr>
+                
+                {% if user.is_authenticated %}
+                    <h4>Leave a Comment</h4>
+                    <form action="{% url 'post-detail' post.slug %}" method="post">
+                        {% csrf_token %}
+                        {{ comment_form|crispy }}
+                        <div class="mb-3">
+                            {{ comment_form.content }}
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Submit Comment</button>
+                    </form>
+                {% else %}
+                    <p>Please <a href="{% url 'users:login' %}">log in</a> to leave a comment.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
