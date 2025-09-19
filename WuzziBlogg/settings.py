@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from django.contrib.auth import get_user_model
 from pathlib import Path
 from decouple import config
 import dj_database_url
@@ -178,3 +178,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For developm
 DEFAULT_FROM_EMAIL = 'wuzziblog@gmail.com'
 
 LOGIN_REDIRECT_URL ='/'
+
+if os.environ.get("CREATE_SUPERUSER", "False") == "True":
+    User = get_user_model()
+    username = os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin")
+    email = os.environ.get("DJANGO_SUPERUSER_EMAIL", "admin@example.com")
+    password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "adminpass")
+
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username=username, email=email, password=password)
+        print("✅ Superuser created!")
