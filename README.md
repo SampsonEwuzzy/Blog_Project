@@ -70,7 +70,10 @@ Bash
 python manage.py createsuperuser
 Run the Development Server:
 
-Bash
+Contribution 🤝
+Feel free to fork the repository, make improvements, and submit a pull request!
 
+License 📝
+This project is licensed under the MIT License.
 python manage.py runserver
 Your blog should now be running at http://127.0.0.1:8000/.
