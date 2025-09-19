@@ -1,13 +1,14 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
+    # CREATE (Specific URL, must come first)
+    path("post/new/", views.post_create, name="post-create"),
+
     # READ
     path("", views.post_list, name="post-list"),
     path("<slug:slug>/", views.post_detail, name="post-detail"),
-
-    # CREATE
-    path("post/new/", views.post_create, name="post-create"),
 
     # UPDATE
     path("<slug:slug>/update/", views.post_update, name="post-update"),

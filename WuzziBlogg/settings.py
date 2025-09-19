@@ -33,8 +33,8 @@ ALLOWED_HOSTS = ['127.0.0.1', 'wuzziblogg.onrender.com']
 
 INSTALLED_APPS = [
     # ... other apps
-    'blog.apps.BlogConfig',
     'ckeditor',
+    'blog.apps.BlogConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     "users.apps.UsersConfig",
@@ -51,7 +51,6 @@ INSTALLED_APPS = [
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Custom',
-        'width': '100%',
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
@@ -78,6 +77,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CLOUDINARY_URL = config("CLOUDINARY_URL")
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
+# Cloudinary CKEditor Settings
+CKEDITOR_UPLOAD_BACKEND = "cloudinary_storage.storage.MediaCloudinaryStorage"
+CKEDITOR_UPLOAD_PATH = 'uploads/ckeditor/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -158,8 +160,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATIC_ROOT = BASE_DIR / "collected_static"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
