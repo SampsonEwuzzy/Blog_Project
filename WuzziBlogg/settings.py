@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'RENDER_EXTERNAL_HOSTNAME']
 
 INSTALLED_APPS = [
     # ... other apps
+    'blog.apps.BlogConfig',
     'ckeditor',
     'crispy_forms',
     'crispy_bootstrap5',
