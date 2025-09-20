@@ -3,50 +3,79 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h1 class="card-title h3 mb-0">
-                        {% if form.instance.pk %} Update Post {% else %} Create Post {% endif %}
-                    </h1>
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {% crispy form %}
-                        <button type="submit" class="btn btn-success mt-3">
-                            {% if form.instance.pk %} Update {% else %} Save {% endif %}
-                        </button>
-                    </form>
-                </div>
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h1 class="card-title h3 mb-0">
+            {% if form.instance.pk %} Update Post {% else %} Create Post {% endif %}
+          </h1>
         </div>
+        <div class="card-body">
+
+          {# show non-field errors clearly #}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for err in form.non_field_errors %}
+                <div>{{ err }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <form id="post-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form %}
+            <button type="submit" class="btn btn-success mt-3">
+              {% if form.instance.pk %} Update {% else %} Save {% endif %}
+            </button>
+          </form>
+
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
-    <!-- TinyMCE CDN with your API key -->
-    <script src="https://cdn.tiny.cloud/1/2vgdnwv5ng4sbkhjohjdx108y6ik1ukn6wtp7zdv2sba8ybi/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+  <!-- TinyMCE CDN with your API key -->
+  <script src="https://cdn.tiny.cloud/1/2vgdnwv5ng4sbkhjohjdx108y6ik1ukn6wtp7zdv2sba8ybi/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            tinymce.init({
-                selector: '#id_content',   // Only apply TinyMCE to the content field
-                height: 400,
-                menubar: false,
-                plugins: "advlist autolink lists link image charmap print preview anchor " +
-                         "searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
-                toolbar: "undo redo | formatselect | bold italic backcolor | " +
-                         "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
-                
-                setup: function (editor) {
-                    editor.on('change', function () {
-                        editor.save();  // sync content back to textarea before submit
-                    });
-                }
-            });
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // init TinyMCE only for the content textarea (Django default id is id_content)
+    tinymce.init({
+      selector: '#id_content',
+      height: 400,
+      menubar: false,
+      plugins: "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
+      toolbar: "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+      setup: function(editor) {
+        editor.on('change', function() {
+          editor.save(); // keep textarea synced on change
         });
-    </script>
+      }
+    });
+
+    // Ensure TinyMCE content is saved to textareas just before submit
+    const form = document.getElementById('post-form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        if (typeof tinymce !== 'undefined') {
+          try {
+            // Update all underlying textareas from editors
+            tinymce.triggerSave();
+            console.log('[debug] tinymce.triggerSave() called');
+          } catch (err) {
+            console.error('[debug] tinymce.triggerSave() error:', err);
+          }
+        } else {
+          console.log('[debug] tinymce not defined');
+        }
+        // Let the form submit normally — don't call e.preventDefault()
+        console.log('[debug] form submit triggered (sending POST)');
+      });
+    }
+  });
+  </script>
 {% endblock %}
