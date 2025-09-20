@@ -9,7 +9,10 @@
                 <p class="text-muted">
                     By {{ post.author }} on {{ post.created_at|date:"F j, Y" }}
                     {% if post.category %}
-                        | In category: <a href="{% url 'posts-by-category' post.category.slug %}" class="text-decoration-none">{{ post.category.name }}</a>
+                        | In category: 
+                        <a href="{% url 'posts-by-category' post.category.slug %}" class="text-decoration-none">
+                            {{ post.category.name }}
+                        </a>
                     {% endif %}
                 </p>
 
@@ -22,9 +25,11 @@
                     </figure>
                 {% endif %}
 
+                <!-- ✅ Render TinyMCE content properly -->
                 <div class="lead">
-                    {{ post.content|linebreaks }}
+                    {{ post.content|safe }}
                 </div>
+
                 <hr class="my-4">
 
                 <div class="share-buttons my-4 d-flex flex-wrap align-items-center">
@@ -48,6 +53,7 @@
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 </div>
+
                 <hr class="my-4">
 
                 <div class="d-flex align-items-center mb-4">
