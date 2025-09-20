@@ -42,40 +42,34 @@
   <script src="https://cdn.tiny.cloud/1/2vgdnwv5ng4sbkhjohjdx108y6ik1ukn6wtp7zdv2sba8ybi/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
   <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // init TinyMCE only for the content textarea (Django default id is id_content)
-    tinymce.init({
-      selector: '#id_content',
-      height: 400,
-      menubar: false,
-      plugins: "advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount",
-      toolbar: "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
-      setup: function(editor) {
-        editor.on('change', function() {
-          editor.save(); // keep textarea synced on change
+    document.addEventListener("DOMContentLoaded", function() {
+      // ✅ Attach TinyMCE only to the "content" field
+      tinymce.init({
+        selector: '#id_content',
+        height: 400,
+        menubar: false,
+        plugins: "advlist autolink lists link image charmap preview anchor " +
+                 "searchreplace visualblocks code fullscreen insertdatetime " +
+                 "media table help wordcount",
+        toolbar: "undo redo | formatselect | bold italic backcolor | " +
+                 "alignleft aligncenter alignright alignjustify | " +
+                 "bullist numlist outdent indent | removeformat | help",
+        setup: function(editor) {
+          editor.on('change', function() {
+            editor.save(); // sync editor content back to textarea
+          });
+        }
+      });
+
+      // ✅ Ensure content is saved before form submission
+      const form = document.getElementById('post-form');
+      if (form) {
+        form.addEventListener('submit', function() {
+          if (typeof tinymce !== 'undefined') {
+            tinymce.triggerSave();
+          }
         });
       }
     });
-
-    // Ensure TinyMCE content is saved to textareas just before submit
-    const form = document.getElementById('post-form');
-    if (form) {
-      form.addEventListener('submit', function(e) {
-        if (typeof tinymce !== 'undefined') {
-          try {
-            // Update all underlying textareas from editors
-            tinymce.triggerSave();
-            console.log('[debug] tinymce.triggerSave() called');
-          } catch (err) {
-            console.error('[debug] tinymce.triggerSave() error:', err);
-          }
-        } else {
-          console.log('[debug] tinymce not defined');
-        }
-        // Let the form submit normally — don't call e.preventDefault()
-        console.log('[debug] form submit triggered (sending POST)');
-      });
-    }
-  });
   </script>
 {% endblock %}
