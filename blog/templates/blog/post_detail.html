@@ -14,7 +14,12 @@
                 </p>
 
                 {% if post.cover_image %}
-                    <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="img-fluid mb-4 rounded">
+                    <figure class="figure mb-4">
+                        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="figure-img img-fluid rounded">
+                        {% if post.cover_image_caption %}
+                            <figcaption class="figure-caption text-center">{{ post.cover_image_caption }}</figcaption>
+                        {% endif %}
+                    </figure>
                 {% endif %}
 
                 <div class="lead">
@@ -25,16 +30,22 @@
                 <div class="share-buttons my-4">
                     <h5 class="d-inline-block me-3">Share this post:</h5>
                     <a href="https://twitter.com/intent/tweet?text={{ post.title }}&url={{ request.build_absolute_uri }}" 
-                       target="_blank" class="btn btn-info text-white me-2">
+                        target="_blank" class="btn btn-info text-white me-2" rel="noopener noreferrer">
                         <i class="fab fa-twitter"></i> Twitter
                     </a>
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
-                       target="_blank" class="btn btn-primary me-2">
+                        target="_blank" class="btn btn-primary me-2" rel="noopener noreferrer">
                         <i class="fab fa-facebook"></i> Facebook
                     </a>
                     <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ post.title }}" 
-                       target="_blank" class="btn btn-secondary">
+                        target="_blank" class="btn btn-secondary me-2" rel="noopener noreferrer">
                         <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                    <a href="https://wa.me/?text={{ post.title|urlencode }}%20%2D%20{{ request.build_absolute_uri }}" 
+                        class="btn btn-success" 
+                        target="_blank" 
+                        rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
                     </a>
                 </div>
                 <hr class="my-4">
@@ -84,9 +95,6 @@
                     <form action="{% url 'post-detail' post.slug %}" method="post">
                         {% csrf_token %}
                         {{ comment_form|crispy }}
-                        <div class="mb-3">
-                            {{ comment_form.content }}
-                        </div>
                         <button type="submit" class="btn btn-success mt-3">Submit Comment</button>
                     </form>
                 {% else %}
