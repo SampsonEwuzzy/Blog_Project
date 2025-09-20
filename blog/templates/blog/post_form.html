@@ -33,16 +33,17 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             tinymce.init({
-                selector: 'textarea',       // apply TinyMCE to all textareas
+                selector: '#id_content',   // Only apply TinyMCE to the content field
                 height: 400,
                 menubar: false,
-                plugins: "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
-                toolbar: "undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+                plugins: "advlist autolink lists link image charmap print preview anchor " +
+                         "searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount",
+                toolbar: "undo redo | formatselect | bold italic backcolor | " +
+                         "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
                 
                 setup: function (editor) {
-                    // ensure content is updated to underlying textarea before submit
                     editor.on('change', function () {
-                        editor.save();
+                        editor.save();  // sync content back to textarea before submit
                     });
                 }
             });
