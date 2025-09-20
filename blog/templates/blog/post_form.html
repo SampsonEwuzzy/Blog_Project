@@ -13,7 +13,7 @@
         </div>
         <div class="card-body">
 
-          {# show non-field errors clearly #}
+          {# Show non-field errors #}
           {% if form.non_field_errors %}
             <div class="alert alert-danger">
               {% for err in form.non_field_errors %}
@@ -24,7 +24,22 @@
 
           <form id="post-form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% crispy form %}
+
+            {# Render each field manually so errors are shown clearly #}
+            {% for field in form %}
+              <div class="mb-3">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                  <div class="text-danger small">
+                    {% for error in field.errors %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+
             <button type="submit" class="btn btn-success mt-3">
               {% if form.instance.pk %} Update {% else %} Save {% endif %}
             </button>
@@ -43,9 +58,8 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // ✅ Attach TinyMCE only to the "content" field
       tinymce.init({
-        selector: '#id_content',
+        selector: '#id_content',  // only on "content" field
         height: 400,
         menubar: false,
         plugins: "advlist autolink lists link image charmap preview anchor " +
@@ -56,12 +70,11 @@
                  "bullist numlist outdent indent | removeformat | help",
         setup: function(editor) {
           editor.on('change', function() {
-            editor.save(); // sync editor content back to textarea
+            editor.save();
           });
         }
       });
 
-      // ✅ Ensure content is saved before form submission
       const form = document.getElementById('post-form');
       if (form) {
         form.addEventListener('submit', function() {
