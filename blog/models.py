@@ -30,8 +30,9 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts")
     excerpt = models.TextField(blank=True, null=True)
-    content = models.TextField()  # Changed from RichTextField() to models.TextField()
+    content = models.TextField()
     cover_image = CloudinaryField("image", blank=True, null=True)
+    cover_image_caption = models.CharField(max_length=255, blank=True, null=True) # New field for image caption
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

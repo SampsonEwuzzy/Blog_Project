@@ -10,11 +10,12 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'excerpt', 'content', 'cover_image', 'status', 'category']
+        fields = ['title', 'excerpt', 'content', 'cover_image', 'cover_image_caption', 'status', 'category'] # Added 'cover_image_caption'
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'excerpt': forms.Textarea(attrs={'class': 'form-control'}),
             'cover_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'cover_image_caption': forms.TextInput(attrs={'class': 'form-control'}), # Added a widget for the caption
             'status': forms.Select(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-control'}),
         }
