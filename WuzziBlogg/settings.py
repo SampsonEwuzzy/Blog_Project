@@ -62,6 +62,10 @@ TINYMCE_DEFAULT_CONFIG = {
     "removeformat | help",
 }
 
+TINYMCE_JS_URL = "https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"
+
+
+
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -163,13 +167,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
 # For production:
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.example.com'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'your-email@example.com'
-#EMAIL_HOST_PASSWORD = 'your-password'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'wuzziblog@gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'wuzziblog@gmail.com'
+#EMAIL_HOST_PASSWORD = 'qwertyuiop@2025'
 DEFAULT_FROM_EMAIL = 'wuzziblog@gmail.com'
 
 LOGIN_REDIRECT_URL ='/'
+
+TINYMCE_JS_URL = "https://cdn.jsdelivr.net/npm/tinymce@5/tinymce.min.js"
 
