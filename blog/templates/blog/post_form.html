@@ -14,19 +14,7 @@
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                {{ field.label_tag }}
-                                {{ field|as_crispy_field }}
-                                {% if field.errors %}
-                                    <div class="text-danger small">
-                                        {% for error in field.errors %}
-                                            {{ error }}<br>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                        {% crispy form %}
                         <button type="submit" class="btn btn-success mt-3">
                             {% if form.instance.pk %} Update {% else %} Save {% endif %}
                         </button>
@@ -41,7 +29,7 @@
 {% block extra_scripts %}
     <!-- TinyMCE CDN -->
     <script src="https://cdn.tiny.cloud/1/2vgdnwv5ng4sbkhjohjdx108y6ik1ukn6wtp7zdv2sba8ybi/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             tinymce.init({
